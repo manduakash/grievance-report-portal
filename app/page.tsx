@@ -10,13 +10,13 @@ import {
 } from "recharts";
 
 // shadcn/ui components
-import { Card, CardContent } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
+import { Card, CardContent, CardHeader } from "../components/ui/card";
+import { Input } from "../components/ui/input";
+import { Button } from "../components/ui/button";
+import { Badge } from "../components/ui/badge";
 import {
   Table, TableBody, TableCell, TableHead, TableHeader, TableRow,
-} from "@/components/ui/table";
+} from "../components/ui/table";
 
 // --- MOCK DATA ---
 const mockData = [
@@ -119,7 +119,7 @@ export default function CampaignDashboard() {
     return (
       <Card
         onClick={() => setActiveFilter(isActive ? "all" : filterKey)}
-        className={`cursor-pointer transition-all duration-200 overflow-hidden ${isActive ? 'ring-2 ring-indigo-600 border-indigo-600 bg-indigo-50/40 shadow-md' : 'hover:border-indigo-300 hover:shadow-md'
+        className={`cursor-pointer transition-all duration-200 overflow-hidden ${isActive ? 'ring-2 ring-indigo-600 border-indigo-600 bg-indigo-100 shadow-md' : 'hover:border-indigo-300 hover:shadow-md'
           }`}
       >
         <CardContent className="p-6 flex justify-between items-center">
@@ -173,44 +173,6 @@ export default function CampaignDashboard() {
           <BentoCard title="Busy Numbers" count={metrics.busy} icon={PhoneForwarded} filterKey="busy" colorClass="bg-gradient-to-br from-orange-400 to-amber-600" />
           <BentoCard title="Invalid/Wrong" count={metrics.invalid} icon={PhoneOff} filterKey="invalid" colorClass="bg-gradient-to-br from-rose-400 to-red-600" />
           <BentoCard title="Complaints" count={metrics.complaints} icon={AlertCircle} filterKey="complaints" colorClass="bg-gradient-to-br from-purple-500 to-fuchsia-600" />
-        </div>
-
-        {/* CHARTS SECTION */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <Card className="shadow-sm border-slate-200">
-            <CardHeader>
-              <h3 className="font-semibold text-lg text-slate-800">Overall Call Status</h3>
-            </CardHeader>
-            <CardContent className="h-72">
-              <ResponsiveContainer width="100%" height="100%">
-                <PieChart>
-                  <Pie data={callStatusData} innerRadius={65} outerRadius={90} paddingAngle={4} dataKey="value">
-                    {callStatusData.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                    ))}
-                  </Pie>
-                  <Tooltip contentStyle={{ borderRadius: '12px', border: '1px solid #e2e8f0', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)' }} />
-                  <Legend verticalAlign="bottom" height={36} iconType="circle" />
-                </PieChart>
-              </ResponsiveContainer>
-            </CardContent>
-          </Card>
-
-          <Card className="lg:col-span-2 shadow-sm border-slate-200">
-            <CardHeader>
-              <h3 className="font-semibold text-lg text-slate-800">Frequent Booth Problems</h3>
-            </CardHeader>
-            <CardContent className="h-72">
-              <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={complaintData} layout="vertical" margin={{ top: 5, right: 30, left: 50, bottom: 5 }}>
-                  <XAxis type="number" hide />
-                  <YAxis dataKey="name" type="category" axisLine={false} tickLine={false} tick={{ fill: '#64748b', fontSize: 13 }} width={140} />
-                  <Tooltip cursor={{ fill: '#f8fafc' }} contentStyle={{ borderRadius: '12px', border: '1px solid #e2e8f0' }} />
-                  <Bar dataKey="count" fill="#6366f1" radius={[0, 6, 6, 0]} barSize={28} />
-                </BarChart>
-              </ResponsiveContainer>
-            </CardContent>
-          </Card>
         </div>
 
         {/* DATA TABLE SECTION WITH SEARCH & PAGINATION */}
@@ -322,6 +284,44 @@ export default function CampaignDashboard() {
             </div>
           )}
         </Card>
+
+        {/* CHARTS SECTION */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <Card className="shadow-sm border-slate-200">
+            <CardHeader>
+              <h3 className="font-semibold text-lg text-slate-800">Overall Call Status</h3>
+            </CardHeader>
+            <CardContent className="h-72">
+              <ResponsiveContainer width="100%" height="100%">
+                <PieChart>
+                  <Pie data={callStatusData} innerRadius={65} outerRadius={90} paddingAngle={4} dataKey="value">
+                    {callStatusData.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                    ))}
+                  </Pie>
+                  <Tooltip contentStyle={{ borderRadius: '12px', border: '1px solid #e2e8f0', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)' }} />
+                  <Legend verticalAlign="bottom" height={36} iconType="circle" />
+                </PieChart>
+              </ResponsiveContainer>
+            </CardContent>
+          </Card>
+
+          <Card className="lg:col-span-2 shadow-sm border-slate-200">
+            <CardHeader>
+              <h3 className="font-semibold text-lg text-slate-800">Frequent Booth Problems</h3>
+            </CardHeader>
+            <CardContent className="h-72">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={complaintData} layout="vertical" margin={{ top: 5, right: 30, left: 50, bottom: 5 }}>
+                  <XAxis type="number" hide />
+                  <YAxis dataKey="name" type="category" axisLine={false} tickLine={false} tick={{ fill: '#64748b', fontSize: 13 }} width={140} />
+                  <Tooltip cursor={{ fill: '#f8fafc' }} contentStyle={{ borderRadius: '12px', border: '1px solid #e2e8f0' }} />
+                  <Bar dataKey="count" fill="#6366f1" radius={[0, 6, 6, 0]} barSize={28} />
+                </BarChart>
+              </ResponsiveContainer>
+            </CardContent>
+          </Card>
+        </div>
 
       </div>
     </div>
